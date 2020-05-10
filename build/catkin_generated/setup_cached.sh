@@ -7,7 +7,5 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/nehal/woa/catkin_ws/devel:$CMAKE_PREFIX_PATH"
+export PKG_CONFIG_PATH="/home/nehal/woa/catkin_ws/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD="/home/nehal/woa/catkin_ws/build"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/nehal/woa/catkin_ws/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/nehal/woa/catkin_ws/src:$ROS_PACKAGE_PATH"
