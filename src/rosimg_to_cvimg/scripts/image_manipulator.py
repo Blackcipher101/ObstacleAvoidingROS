@@ -19,7 +19,7 @@ import cv2
 
 # Instantiate CvBridge
 bridge = CvBridge()
-c=1
+c='1'
 def image_callback(msg):
     global c
 
@@ -32,19 +32,9 @@ def image_callback(msg):
     else:
         # Save your OpenCV2 image as a jpeg
 
-        if c<10:
-            c ='00'+str(c)
-    	elif c<100:
-    		c ='0'+str(c)
-    	elif c<1000:
-            c = str(c)
-        name='images/camera'+c+'.jpeg'
-        cv2.imwrite(name, cv2_img)
-        c=int(c)+1
-
 
 def main():
-    rospy.init_node('image_listener')
+    rospy.init_node('image_manipulator')
     # Define your image topic
     image_topic = "/rrbot/camera1/image_raw"
     # Set up your subscriber and define its callback
