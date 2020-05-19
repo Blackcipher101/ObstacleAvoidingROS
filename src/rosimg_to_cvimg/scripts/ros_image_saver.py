@@ -16,33 +16,41 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 # OpenCV2 for saving an image
 import cv2
+import image_processing
 
 # Instantiate CvBridge
 bridge = CvBridge()
 c=1
+backSub = cv2.createBackgroundSubtractorMOG2()
 def image_callback(msg):
     global c
 
-    print("Received an image!")
+    #print("Received an image!")
     try:
         # Convert your ROS Image message to OpenCV2
         cv2_img = bridge.imgmsg_to_cv2(msg, "bgr8")
+
     except CvBridgeError, e:
         print(e)
     else:
+
         # Save your OpenCV2 image as a jpeg
-
-        if c<10:
-            c ='00'+str(c)
-    	elif c<100:
-    		c ='0'+str(c)
-    	elif c<1000:
-            c = str(c)
-        name='images/camera'+c+'.jpeg'
-        cv2.imwrite(name, cv2_img)
-        c=int(c)+1
+        if cv2_img is None:
+            exit()
+        fgMask = backSub.apply(cv2_img)
 
 
+        cv2.rectangle(cv2_img, (10, 2), (100,20), (255,255,255), -1)
+
+
+        cv2.imshow('Frame', cv2_img)
+        cv2.imshow('FG Mask', fgMask)
+        keyboard = cv2.waitKey(30)
+        regions=image_processing.process_frame(fgMask)
+        if regions['left']>regions['right']:
+            print('left')
+        elif regions['left']<regions['right']:
+            print('right')
 def main():
     rospy.init_node('image_listener')
     # Define your image topic
@@ -51,6 +59,9 @@ def main():
     rospy.Subscriber(image_topic, Image, image_callback)
     # Spin until ctrl + c
     rospy.spin()
+
+if __name__ == '__main__':
+    main()
 
 if __name__ == '__main__':
     main()
